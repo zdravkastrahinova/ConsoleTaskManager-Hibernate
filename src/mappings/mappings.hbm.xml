@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="models.Task" table="Tasks" schema="TaskManager">
+        <id name="id" column="id"/>
+        <property name="title" column="title"/>
+        <property name="content" column="content"/>
+        <property name="status" column="status">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">enums.TaskStatusEnum</param>
+            </type>
+        </property>
+        <many-to-one name="user" class="models.User" column="userId"/>
+    </class>
+
+    <class name="models.User" table="Users" schema="TaskManager">
+        <id name="id" column="id"/>
+        <property name="username" column="username"/>
+        <property name="password" column="password"/>
+        <set name="tasks" inverse="true" cascade="all">
+            <key column="userId" not-null="true" />
+            <one-to-many class="models.Task"/>
+        </set>
+    </class>
+</hibernate-mapping>
